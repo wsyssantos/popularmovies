@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Popular Movies</string>
+
+    <string name="movie_poster_image_content_description">Movie Poster</string>
+
+    <string name="action_order_popularity">Order By Popularity</string>
+    <string name="action_order_rating">Order By Rating</string>
+
+    <!-- Movie Detail -->
+    <string name="rating_title">Rating:</string>
+    <string name="release_date_title">Release Date:</string>
+    <string name="synopsis_date_title">Synopsis:</string>
+
+</resources>
