@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import com.project.udacity.santos.wesley.popularmovies.R;
 import com.project.udacity.santos.wesley.popularmovies.model.Movie;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ import java.util.List;
 
 public class MovieListAdapter extends RecyclerView.Adapter<MovieListViewHolder> {
 
-    private List<Movie> movieList;
+    private List<Movie> movieList = new ArrayList<>();
     private MovieListOnItemClickListener itemClickListener;
 
     public MovieListAdapter(MovieListOnItemClickListener itemClickListener) {

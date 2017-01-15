@@ -10,14 +10,20 @@ import com.project.udacity.santos.wesley.popularmovies.api.MovieDBApi;
 import com.project.udacity.santos.wesley.popularmovies.model.Movie;
 import com.squareup.picasso.Picasso;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by wesley on 14/01/17.
  */
 
 public class MovieListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-    private ImageView imageViewMoviePoster;
-    private TextView textViewMovieTitle;
+    @BindView(R.id.iv_movie_poster)
+    ImageView imageViewMoviePoster;
+    @BindView(R.id.tv_movie_title)
+    TextView textViewMovieTitle;
+
     private MovieDBApi movieDBApi = MovieDBApi.getInstance();
     private Movie movie;
     private MovieListOnItemClickListener itemClickListener;
@@ -26,9 +32,7 @@ public class MovieListViewHolder extends RecyclerView.ViewHolder implements View
         super(itemView);
         itemClickListener = listener;
 
-        imageViewMoviePoster = (ImageView) itemView.findViewById(R.id.iv_movie_poster);
-        textViewMovieTitle = (TextView) itemView.findViewById(R.id.tv_movie_title);
-
+        ButterKnife.bind(this, itemView);
         itemView.setOnClickListener(this);
     }
 

@@ -1,10 +1,11 @@
 package com.project.udacity.santos.wesley.popularmovies.movielist;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -15,17 +16,24 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.project.udacity.santos.wesley.popularmovies.R;
-import com.project.udacity.santos.wesley.popularmovies.api.MovieDBApi;
 import com.project.udacity.santos.wesley.popularmovies.model.Movie;
 import com.project.udacity.santos.wesley.popularmovies.moviedetail.MovieDetailActivity;
+import com.project.udacity.santos.wesley.popularmovies.utils.NetworkUtils;
 
 import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MovieListActivity extends AppCompatActivity implements MovieListRequestDelegate, MovieListOnItemClickListener {
 
     private static final String TAG = MovieListActivity.class.getSimpleName();
-    private RecyclerView recyclerViewMovieList;
-    private ProgressBar progressBarMovieList;
+
+    @BindView(R.id.rv_movie_list)
+    RecyclerView recyclerViewMovieList;
+    @BindView(R.id.pb_movie_list)
+    ProgressBar progressBarMovieList;
+
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<Movie> movieList;
     private MovieListAdapter movieListAdapter;
@@ -34,7 +42,7 @@ public class MovieListActivity extends AppCompatActivity implements MovieListReq
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_list);
-        bindViews();
+        ButterKnife.bind(this);
 
         layoutManager = new StaggeredGridLayoutManager(columntCount(), StaggeredGridLayoutManager.VERTICAL);
         recyclerViewMovieList.setLayoutManager(layoutManager);
@@ -48,11 +56,6 @@ public class MovieListActivity extends AppCompatActivity implements MovieListReq
             movieList = savedInstanceState.getParcelableArrayList("movieList");
             fillRecyclerView();
         }
-    }
-
-    private void bindViews() {
-        recyclerViewMovieList = (RecyclerView) findViewById(R.id.rv_movie_list);
-        progressBarMovieList = (ProgressBar) findViewById(R.id.pb_movie_list);
     }
 
     private void showProgressBar() {
@@ -111,9 +114,26 @@ public class MovieListActivity extends AppCompatActivity implements MovieListReq
 
     private void loadMovieList(MovieListRequestTask.MovieOrderType type) {
         movieList = new ArrayList<>();
-        fillRecyclerView();
-        MovieListRequestTask task = new MovieListRequestTask(this);
-        task.execute(type);
+        if(NetworkUtils.hasInternetConnection(this)) {
+            fillRecyclerView();
+            MovieListRequestTask task = new MovieListRequestTask(this);
+            task.execute(type);
+        } else {
+            showInternetConnectionErrorMessage();
+        }
+    }
+
+    private void showInternetConnectionErrorMessage() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.no_internet_connection_error_message)
+                .setTitle(R.string.no_internet_connection_error_title);
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     @Override

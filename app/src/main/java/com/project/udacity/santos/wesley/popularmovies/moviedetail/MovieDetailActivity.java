@@ -22,19 +22,31 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 import static com.project.udacity.santos.wesley.popularmovies.R.id.movieBackdropImage;
 
 public class MovieDetailActivity extends AppCompatActivity {
 
-    private CollapsingToolbarLayout collapsingToolbarLayout;
-    private AppBarLayout appBarLayout;
-    private ImageView movieBackdropImage;
-    private Toolbar toolbar;
-    private ImageView moviePoster;
-    private TextView movieTitle;
-    private TextView movieRating;
-    private TextView movieReleaseDate;
-    private TextView movieSynopsis;
+    @BindView(R.id.collapsing_toolbar)
+    CollapsingToolbarLayout collapsingToolbarLayout;
+    @BindView(R.id.app_bar_layout)
+    AppBarLayout appBarLayout;
+    @BindView(R.id.movieBackdropImage)
+    ImageView movieBackdropImage;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.iv_movie_poster)
+    ImageView moviePoster;
+    @BindView(R.id.tv_movie_title)
+    TextView movieTitle;
+    @BindView(R.id.tv_movie_rating)
+    TextView movieRating;
+    @BindView(R.id.tv_movie_release_date)
+    TextView movieReleaseDate;
+    @BindView(R.id.tv_movie_synopsis)
+    TextView movieSynopsis;
 
     private Movie movie;
     private MovieDBApi movieDBApi = MovieDBApi.getInstance();
@@ -43,7 +55,8 @@ public class MovieDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
-        bindViews();
+        ButterKnife.bind(this);
+
         configureToolBar();
         loadMovieFromIntent();
     }
@@ -54,19 +67,6 @@ public class MovieDetailActivity extends AppCompatActivity {
             configureViewContent();
         }
     }
-
-    private void bindViews() {
-        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        appBarLayout = (AppBarLayout) findViewById(R.id.app_bar_layout);
-        movieBackdropImage = (ImageView) findViewById(R.id.movieBackdropImage);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        moviePoster = (ImageView) findViewById(R.id.iv_movie_poster);
-        movieTitle = (TextView) findViewById(R.id.tv_movie_title);
-        movieRating = (TextView) findViewById(R.id.tv_movie_rating);
-        movieReleaseDate = (TextView) findViewById(R.id.tv_movie_release_date);
-        movieSynopsis = (TextView) findViewById(R.id.tv_movie_synopsis);
-    }
-
     private void configureViewContent() {
         getSupportActionBar().setTitle(movie.getTitle());
         movieTitle.setText(movie.getTitle());
