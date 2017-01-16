@@ -15,6 +15,7 @@ import java.util.List;
 
 public class Movie implements Parcelable {
     private static final String TAG = "Movie";
+    public static final String MOVIE_KEY = "movie";
 
     private String posterPath;
     private boolean adult;

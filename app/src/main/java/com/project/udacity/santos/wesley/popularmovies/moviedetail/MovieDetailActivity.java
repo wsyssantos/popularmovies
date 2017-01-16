@@ -62,8 +62,8 @@ public class MovieDetailActivity extends AppCompatActivity {
     }
 
     private void loadMovieFromIntent() {
-        if(getIntent().hasExtra("movie")) {
-            movie = getIntent().getParcelableExtra("movie");
+        if(getIntent().hasExtra(Movie.MOVIE_KEY)) {
+            movie = getIntent().getParcelableExtra(Movie.MOVIE_KEY);
             configureViewContent();
         }
     }

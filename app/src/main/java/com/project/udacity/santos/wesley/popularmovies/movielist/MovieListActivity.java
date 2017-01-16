@@ -28,6 +28,7 @@ import butterknife.ButterKnife;
 public class MovieListActivity extends AppCompatActivity implements MovieListRequestDelegate, MovieListOnItemClickListener {
 
     private static final String TAG = MovieListActivity.class.getSimpleName();
+    private static final String MOVIE_LIST_KEY = "movieList";
 
     @BindView(R.id.rv_movie_list)
     RecyclerView recyclerViewMovieList;
@@ -50,10 +51,10 @@ public class MovieListActivity extends AppCompatActivity implements MovieListReq
         movieListAdapter = new MovieListAdapter(this);
         recyclerViewMovieList.setAdapter(movieListAdapter);
 
-        if(savedInstanceState == null || !savedInstanceState.containsKey("movieList")) {
+        if(savedInstanceState == null || !savedInstanceState.containsKey(MOVIE_LIST_KEY)) {
             loadMovieList(MovieListRequestTask.MovieOrderType.POPULARITY);
         } else {
-            movieList = savedInstanceState.getParcelableArrayList("movieList");
+            movieList = savedInstanceState.getParcelableArrayList(MOVIE_LIST_KEY);
             fillRecyclerView();
         }
     }
@@ -76,18 +77,9 @@ public class MovieListActivity extends AppCompatActivity implements MovieListReq
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-        if(movieList != null) {
-            outState.putParcelableArrayList("movieList", movieList);
-            Log.i(TAG, "movieListAdded");
-        }
-        super.onSaveInstanceState(outState, outPersistentState);
-    }
-
-    @Override
     protected void onSaveInstanceState(Bundle outState) {
         if(movieList != null) {
-            outState.putParcelableArrayList("movieList", movieList);
+            outState.putParcelableArrayList(MOVIE_LIST_KEY, movieList);
             Log.i(TAG, "movieListAdded");
         }
         super.onSaveInstanceState(outState);
@@ -155,7 +147,7 @@ public class MovieListActivity extends AppCompatActivity implements MovieListReq
     @Override
     public void onMovieItemClick(Movie movie) {
         Intent detailIntent = new Intent(MovieListActivity.this, MovieDetailActivity.class);
-        detailIntent.putExtra("movie", movie);
+        detailIntent.putExtra(Movie.MOVIE_KEY, movie);
         startActivity(detailIntent);
     }
 }
